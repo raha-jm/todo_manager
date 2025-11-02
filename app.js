@@ -7,7 +7,8 @@ addTaskBtn.addEventListener('click',function(){
     const taskText = taskInput.nodeValue.trim();
 
     if (taskText === "") {
-        message.innerHTML = "لطفا یک کار وارد کنید";
+        message.textContent = "لطفا یک کار وارد کنید";
+        message.style.color = "red";
         return;
      }
     const li = document.createElement("li");
@@ -15,4 +16,7 @@ addTaskBtn.addEventListener('click',function(){
     taskList.appendChild(li);
 
     taskInput.nodeValue = "";
+    message.textContent = "کار با موفقیت اضافه سد!"ک
+    message.style.color = "green";
+
 })
