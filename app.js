@@ -12,8 +12,10 @@ addTaskBtn.addEventListener('click',function(){
         return;
      }
     const li = document.createElement("li");
-    li.textContent = taskText;
-    taskList.appendChild(li);
+    
+    span.className = 'task-text';
+    span.textContent = taskText;
+    li.appendChild(span);
     
 
     const deleteBtn = document.createElement("button");
@@ -22,21 +24,81 @@ addTaskBtn.addEventListener('click',function(){
     li.appendChild(deleteBtn);
 
 
-    li.addEventListener('click',function(){
+    span.addEventListener('click',function(){
         li.classList.toggle('completed');
+        saveTasks();
     });
 
-    
+    taskList.appendChild(li);
 
     taskInput.value = "";
     message.textContent = "کار با موفقیت اضافه شد!"
     message.style.color = "green";
 
-    deleteBtn.addEventListener('click',function(){
+    deleteBtn.addEventListener('click',function(e){
+        e.stopPropagation();
         li.remove();
         message.textContent = "کار حذف شد!";
         message.style.color = 'orange';
+        saveTasks();
+    });
+    saveTasks();
+    
+});
+function saveTasks(){
+       const  tasks = [];
+       document.querySelectorAll('#taskList li').forEach(li => {
+        const textEl =li.querySelector('.task-text');
+        const text = textEl ? textEl.textContent.trim() : '';
+        const completed = li.classList.contains('completed');
+        tasks.push({
+        text:li.textContent.replace("حذف","").trim(),
+        compeleted:li.classList.contains('completed') 
+        });
+       });
+       try{
+        localStorage.setItem('tasks',JSON.stringify(tasks));
+       }catch(err){
+        console.error('Could not save tasks :',err)
+       }
+}
+document.addEventListener('DOMContentLoaded',loadTasks);
 
+function loadTasks(){
+    let savedTasks = [];
+    try{
+        savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    }catch(err){
+        console.warn('Saved tasks parse failed, resetting.',err);
+        saveTasks = [];
+    }
+    savedTasks.forEach(task =>{
+        const li = document.createElement('li');
+
+        const span = document.createElement('span');
+        span.className = 'task-text';
+        span.textContent = task.text || '';
+        li.appendChild(span);
+        
+        if (task.completed) li.classList.add('completed');
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'حذف';
+        deleteBtn.classList.add('delete-btn');
+        li.appendChild(deleteBtn);
+
+        deleteBtn.addEventListener('click',function(e){
+            e.stopPropagation();
+            li.remove();
+            message.textContent = 'کار حذف شد !';
+            message.style.color = 'orange';
+            saveTasks();
+        });
+        apan.addEventListener('click',function(){
+            li.classList.toggle('completed');
+            saveTasks();
+        });
+        taskList.appendChild(li);
     });
 
-})
+}
