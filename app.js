@@ -4,7 +4,7 @@ const addTaskBtn = document.getElementById('addTaskBtn');
 const taskList = document.getElementById('taskList');
 const message = document.getElementById('message')
 addTaskBtn.addEventListener('click',function(){
-    const taskText = taskInput.nodeValue.trim();
+    const taskText = taskInput.value.trim();
 
     if (taskText === "") {
         message.textContent = "لطفا یک کار وارد کنید";
@@ -13,10 +13,26 @@ addTaskBtn.addEventListener('click',function(){
      }
     const li = document.createElement("li");
     li.textContent = taskText;
-    taskList.appendChild(li);
+    
 
-    taskInput.nodeValue = "";
-    message.textContent = "کار با موفقیت اضافه سد!"ک
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "حذف";
+    deleteBtn.classList.add("delete-btn");
+
+
+    li.appendChild(deleteBtn);
+    taskList.appendChild(li);
+    
+
+    taskInput.value = "";
+    message.textContent = "کار با موفقیت اضافه شد!"
     message.style.color = "green";
+
+    deleteBtn.addEventListener('click',function(){
+        li.remove();
+        message.textContent = "کار حذف شد!";
+        message.style.color = 'orange';
+
+    });
 
 })
