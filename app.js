@@ -13,15 +13,19 @@ addTaskBtn.addEventListener('click',function(){
      }
     const li = document.createElement("li");
     li.textContent = taskText;
+    taskList.appendChild(li);
     
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "حذف";
     deleteBtn.classList.add("delete-btn");
-
-
     li.appendChild(deleteBtn);
-    taskList.appendChild(li);
+
+
+    li.addEventListener('click',function(){
+        li.classList.toggle('completed');
+    });
+
     
 
     taskInput.value = "";
