@@ -12,6 +12,7 @@ addTaskBtn.addEventListener('click',function(){
         return;
      }
     const li = document.createElement("li");
+    const span = document.createElement('span')
     
     span.className = 'task-text';
     span.textContent = taskText;
@@ -51,10 +52,7 @@ function saveTasks(){
         const textEl =li.querySelector('.task-text');
         const text = textEl ? textEl.textContent.trim() : '';
         const completed = li.classList.contains('completed');
-        tasks.push({
-        text:li.textContent.replace("حذف","").trim(),
-        compeleted:li.classList.contains('completed') 
-        });
+        tasks.push({text,completed});
        });
        try{
         localStorage.setItem('tasks',JSON.stringify(tasks));
@@ -70,7 +68,7 @@ function loadTasks(){
         savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     }catch(err){
         console.warn('Saved tasks parse failed, resetting.',err);
-        saveTasks = [];
+        savedTasks = [];
     }
     savedTasks.forEach(task =>{
         const li = document.createElement('li');
@@ -94,7 +92,7 @@ function loadTasks(){
             message.style.color = 'orange';
             saveTasks();
         });
-        apan.addEventListener('click',function(){
+        span.addEventListener('click',function(){
             li.classList.toggle('completed');
             saveTasks();
         });
